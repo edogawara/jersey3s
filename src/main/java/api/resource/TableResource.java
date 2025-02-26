@@ -32,17 +32,17 @@ public class TableResource {
     @Produces(MediaType.APPLICATION_JSON)
     public InfoTable getTableInfo() {
     	Connection conn = null;
-		InfoTable cTable = null;
+		InfoTable oInfo = null;
 		try {
 			conn = JdbcUtil.getConnection();
-			cTable = new InfoTable( conn, tableid );
+			oInfo = new InfoTable( conn, tableid );
 		} catch (Exception e) {
    			throw new ExtendedWebApplicationException("info table error!");
 		} finally {
 			if( conn != null )
 				try { conn.close();} catch (SQLException e) {}
 		}
-        return  cTable;
+        return  oInfo;
     }
     
 

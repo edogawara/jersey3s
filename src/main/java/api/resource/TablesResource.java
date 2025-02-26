@@ -1,11 +1,18 @@
 package api.resource;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+
+import api.entity.Tables;
+import api.exception.ExtendedWebApplicationException;
+import api.util.JdbcUtil;
 
 
 /**
@@ -28,8 +35,19 @@ public class TablesResource {
         return new TableResource(tableid);
     }
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getIt() {
-        return "No Support URI!";
+    @Produces(MediaType.APPLICATION_JSON)
+    public Tables getTables() {
+    	Connection conn = null;
+		Tables oTables = null;
+		try {
+			conn = JdbcUtil.getConnection();
+			oTables = new Tables( conn );
+		} catch (Exception e) {
+   			throw new ExtendedWebApplicationException("tables error!");
+		} finally {
+			if( conn != null )
+				try { conn.close();} catch (SQLException e) {}
+		}
+        return  oTables;
     }  
 }

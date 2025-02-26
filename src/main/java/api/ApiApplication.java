@@ -1,6 +1,9 @@
 package api;
 
 import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -37,14 +40,28 @@ public class ApiApplication extends Application {
                         url = "/jersey3s")
         }
 )
+
+
 public class ApiApplication extends ResourceConfig {
+	
+	// CORS 対応(static class or new instance)
+	public static class CORSFilter implements ContainerResponseFilter {
+
+	    @Override
+	    public void filter(ContainerRequestContext request, ContainerResponseContext response) {
+	        response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
+	        response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
+	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
+	    }
+	}
+	
     public ApiApplication() {
   
         OpenApiResource openApiResource = new OpenApiResource();
         register(openApiResource);
+        register(CORSFilter.class);
         
         packages("api.resource"); // リソースクラスを含むパッケージ
-        // register(new JettisonFeature()); // エラーじゃないが、class だけで良い
         // register(JettisonFeature.class);
         register(JacksonFeature.class);
     }
