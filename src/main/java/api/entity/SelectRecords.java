@@ -14,7 +14,7 @@ public class SelectRecords {
 	
 	public SelectRecords(Connection conn, String tableName ) throws SQLException  {
 		
-		String sql = "select * from " + tableName;
+		String sql = "select * from " + tableName ;
 		
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);

@@ -2,6 +2,7 @@ package api.resource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import jakarta.ws.rs.Consumes;
@@ -21,7 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import api.entity.DeleteRecord;
-import api.entity.InsertTable;
+import api.entity.InsertRecord;
+import api.entity.SearchRecords;
 import api.entity.SelectRecord;
 import api.entity.SelectRecords;
 import api.entity.UpdateRecord;
@@ -60,7 +62,7 @@ public class RecordsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateRecord( @PathParam("recordid") String recordid , String jsonString) {
     	Connection conn = null;
-		UpdateRecord cRecord = null;
+		UpdateRecord oRecord = null;
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -69,7 +71,7 @@ public class RecordsResource {
 			JsonNode node = jsonObject.get("record");
 			LinkedHashMap<String, String> data = mapper.convertValue(node, LinkedHashMap.class);
 			conn = JdbcUtil.getConnection();
-			cRecord = new UpdateRecord( conn, tableid, recordid,  data );
+			oRecord = new UpdateRecord( conn, tableid, recordid,  data );
 			
 		} catch (Exception e) {
    			throw new  ExtendedWebApplicationException("insert error!");
@@ -79,7 +81,6 @@ public class RecordsResource {
 		}
     }
     @Path("{recordid}") @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
     public void deleteRecord( @PathParam("recordid") String recordid ) {
     	Connection conn = null;
 		try {
@@ -91,6 +92,27 @@ public class RecordsResource {
 			if( conn != null )
 				try { conn.close();} catch (SQLException e) {}
 		}
+    }
+    @Path("search") @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public SearchRecords searchRecords(String jsonString ) {
+       	Connection conn = null;
+       	SearchRecords oRecords = null;
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			JsonNode node = mapper.readTree(jsonString);
+			//  {"query":""}
+			HashMap<String,String> cond = mapper.convertValue(node, HashMap.class);
+			conn = JdbcUtil.getConnection();
+			oRecords = new SearchRecords( conn, tableid, cond );
+		} catch (Exception e) {
+   			throw new  ExtendedWebApplicationException("insert error!");
+		} finally {
+			if( conn != null )
+				try { conn.close();} catch (SQLException e) {}
+		}
+		return oRecords;
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -113,7 +135,7 @@ public class RecordsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response insertTable( String jsonString, @Context UriInfo uriInfo ) {
     	Connection conn = null;
-		InsertTable oTable = null;
+		InsertRecord oRecord = null;
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -122,7 +144,7 @@ public class RecordsResource {
 			JsonNode node = jsonObject.get("record");
 			LinkedHashMap<String,String> data = mapper.convertValue(node, LinkedHashMap.class);
 			conn = JdbcUtil.getConnection();
-			oTable = new InsertTable( conn, tableid, data );
+			oRecord = new InsertRecord( conn, tableid, data );
 			
 		} catch (Exception e) {
    			throw new  ExtendedWebApplicationException("insert error!");

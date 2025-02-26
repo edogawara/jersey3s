@@ -9,9 +9,9 @@ import java.util.LinkedHashMap;
 
 import api.exception.ExtendedBadRequestException;
 
-public class InsertTable {
+public class InsertRecord {
 
-	public InsertTable(Connection conn, String tableid, LinkedHashMap<String,String> record)
+	public InsertRecord(Connection conn, String tableid, LinkedHashMap<String,String> record)
 				throws SQLException {
 	
 		{
