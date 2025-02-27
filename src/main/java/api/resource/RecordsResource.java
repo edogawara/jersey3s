@@ -74,7 +74,7 @@ public class RecordsResource {
 			oRecord = new UpdateRecord( conn, tableid, recordid,  data );
 			
 		} catch (Exception e) {
-   			throw new  ExtendedWebApplicationException("insert error!");
+   			throw new  ExtendedWebApplicationException("update error!");
 		} finally {
 			if( conn != null )
 				try { conn.close();} catch (SQLException e) {}

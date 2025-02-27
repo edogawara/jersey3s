@@ -30,7 +30,7 @@ public class TableResource {
       
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public InfoTable getTableInfo() {
+    public InfoTable getInfoTable() {
     	Connection conn = null;
 		InfoTable oInfo = null;
 		try {

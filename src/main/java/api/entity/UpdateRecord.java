@@ -26,9 +26,9 @@ public class UpdateRecord {
 		sql.append( colList.toString() + " where id = ?");
 		PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 		for ( int i = 0; i < cols.size(); i++){
-		    pstmt.setString( cols.size() , record.get(cols.get(i)) );
+		    pstmt.setString( i + 1 , record.get(cols.get(i)) );
 		}
-		pstmt.setString(cols.size(), recordid);
+		pstmt.setString(cols.size() + 1, recordid);
 		int rows = pstmt.executeUpdate();
 		if( rows == 0 ) {
 			throw new  ExtendedNotFoundException("update data not found!");
