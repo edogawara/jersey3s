@@ -62,16 +62,15 @@ public class RecordsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void updateRecord( @PathParam("recordid") String recordid , String jsonString) {
     	Connection conn = null;
-		UpdateRecord oRecord = null;
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JsonNode jsonObject = mapper.readTree(jsonString);
-		//  {"record":{{col1:"value1"},{col2:"value2"}...}}
+			//  {"record":{{col1:"value1"},{col2:"value2"}...}}
 			JsonNode node = jsonObject.get("record");
 			LinkedHashMap<String, String> data = mapper.convertValue(node, LinkedHashMap.class);
 			conn = JdbcUtil.getConnection();
-			oRecord = new UpdateRecord( conn, tableid, recordid,  data );
+			new UpdateRecord( conn, tableid, recordid,  data );
 			
 		} catch (Exception e) {
    			throw new  ExtendedWebApplicationException("update error!");
@@ -135,7 +134,6 @@ public class RecordsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response insertTable( String jsonString, @Context UriInfo uriInfo ) {
     	Connection conn = null;
-		InsertRecord oRecord = null;
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -144,7 +142,7 @@ public class RecordsResource {
 			JsonNode node = jsonObject.get("record");
 			LinkedHashMap<String,String> data = mapper.convertValue(node, LinkedHashMap.class);
 			conn = JdbcUtil.getConnection();
-			oRecord = new InsertRecord( conn, tableid, data );
+			new InsertRecord( conn, tableid, data );
 			
 		} catch (Exception e) {
    			throw new  ExtendedWebApplicationException("insert error!");

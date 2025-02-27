@@ -25,4 +25,14 @@
 
 ## 設定
 
+JDBC JNDI
 META-INF/context.xml
+
+JDBC Driver 
+${CATALINA_HOME}/lib
+
+## 制限
+
+* テーブルに"id"というカラム名が存在する
+* 文字列で変換可能なデータ"型"
+
