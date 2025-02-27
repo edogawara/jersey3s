@@ -10,7 +10,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 
@@ -28,15 +27,13 @@ public class ApiApplication extends Application {
 // Swagger Suport 
 @OpenAPIDefinition(
         info = @io.swagger.v3.oas.annotations.info.Info(
-                title = "Jersey Simple API",
+                title = "Jersey Sample API",
                 version = "0.0",
-                description = "Swagger Core で定義を生成",
-                license = @io.swagger.v3.oas.annotations.info.License (name = "Apache 2.0", url = "http://foo.bar"),
-                contact = @Contact(url = "http://hoge.com", name = "yamada", email = "yamada@hoge.com")
+                description = "Swagger Core で定義を生成"
         ),
         servers = {
                 @Server(
-                        description = "server 1",
+                        description = "my server",
                         url = "/jersey3s")
         }
 )
