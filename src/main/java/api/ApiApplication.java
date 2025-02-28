@@ -12,7 +12,6 @@ import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.servers.Server;
 
-
 @ApplicationPath("/api")
 /*
 public class ApiApplication extends Application {
@@ -26,24 +25,21 @@ public class ApiApplication extends Application {
 */
 // Swagger Suport 
 @OpenAPIDefinition(
-        info = @io.swagger.v3.oas.annotations.info.Info(
-                title = "Jersey Sample API",
-                version = "0.0",
-                description = "Swagger Core で定義を生成"
-        ),
-        servers = {
-                @Server(
-                        description = "my server",
-                        url = "/jersey3s")
-        }
+	info = @io.swagger.v3.oas.annotations.info.Info(
+        title = "Jersey Sample API",
+        version = "0.0",
+        description = "Swagger Core で定義を生成"
+    ),
+    servers = {
+        @Server(
+        description = "my server",
+        url = "/jersey3s")
+    }
 )
-
-
 public class ApiApplication extends ResourceConfig {
-	
+
 	// CORS 対応(static class or new instance)
 	public static class CORSFilter implements ContainerResponseFilter {
-
 	    @Override
 	    public void filter(ContainerRequestContext request, ContainerResponseContext response) {
 	        response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
@@ -51,7 +47,6 @@ public class ApiApplication extends ResourceConfig {
 	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
 	    }
 	}
-	
     public ApiApplication() {
   
         OpenApiResource openApiResource = new OpenApiResource();

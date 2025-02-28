@@ -29,7 +29,7 @@ public class TablesResource {
    			throw new  ExtendedNotAuthorizedException("no permission!");
     	}
     	*/
-    	// サブリソースをインスタンス化する
+    	// サブリソースはインスタンス化してjerseyエンジンに戻す
     	//   メソッドの呼び出しは jersey が行う
         return new TableResource(tableid);
     }

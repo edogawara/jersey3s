@@ -21,17 +21,14 @@ public class TableResource {
 	TableResource(String tableid ) {
 		this.tableid = tableid;
 	}
-
     @Path("records")
     public RecordsResource getRecords() {
         return  new RecordsResource(tableid);
     }
-      
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public InfoTable getInfoTable() {
-    	// Connection conn = null;
-		InfoTable oInfo = null;
+ 		InfoTable oInfo = null;
 		try (Connection conn = JdbcUtil.getConnection() ) {
 			oInfo = new InfoTable( conn, tableid );
 		} catch (Exception e) {
@@ -39,6 +36,4 @@ public class TableResource {
 		}
         return  oInfo;
     }
-    
-
 }
