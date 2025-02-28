@@ -1,7 +1,6 @@
 package api.resource;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -31,16 +30,12 @@ public class TableResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public InfoTable getInfoTable() {
-    	Connection conn = null;
+    	// Connection conn = null;
 		InfoTable oInfo = null;
-		try {
-			conn = JdbcUtil.getConnection();
+		try (Connection conn = JdbcUtil.getConnection() ) {
 			oInfo = new InfoTable( conn, tableid );
 		} catch (Exception e) {
    			throw new ExtendedWebApplicationException("info table error!");
-		} finally {
-			if( conn != null )
-				try { conn.close();} catch (SQLException e) {}
 		}
         return  oInfo;
     }

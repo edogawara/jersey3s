@@ -1,7 +1,6 @@
 package api.resource;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.HeaderParam;
@@ -37,16 +36,12 @@ public class TablesResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Tables getTables() {
-    	Connection conn = null;
+    	
 		Tables oTables = null;
-		try {
-			conn = JdbcUtil.getConnection();
+		try ( Connection conn = JdbcUtil.getConnection() ) {
 			oTables = new Tables( conn );
 		} catch (Exception e) {
    			throw new ExtendedWebApplicationException("tables error!");
-		} finally {
-			if( conn != null )
-				try { conn.close();} catch (SQLException e) {}
 		}
         return  oTables;
     }  

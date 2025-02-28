@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -21,12 +19,9 @@ import jakarta.ws.rs.core.UriInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import api.entity.DeleteRecord;
 import api.entity.InsertRecord;
 import api.entity.SearchRecords;
-import api.entity.SelectRecord;
 import api.entity.SelectRecords;
-import api.entity.UpdateRecord;
 import api.exception.ExtendedWebApplicationException;
 import api.util.JdbcUtil;
 
@@ -40,57 +35,9 @@ public class RecordsResource {
 	RecordsResource(String tableid) {
 		this.tableid = tableid;
 	}
-
-    @Path("{recordid}") @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public SelectRecord getRecord(@PathParam("recordid") String recordid) {
-    	Connection conn = null;
-		SelectRecord oRecord = null;
-		try {
-			conn = JdbcUtil.getConnection();
-			oRecord = new SelectRecord( conn, tableid, recordid );
-		} catch (Exception e) {
-   			throw new ExtendedWebApplicationException("select table error!");
-		} finally {
-			if( conn != null )
-				try { conn.close();} catch (SQLException e) {}
-		}
-        return  oRecord;
-    }
-    
-    @Path("{recordid}") @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    public void updateRecord( @PathParam("recordid") String recordid , String jsonString) {
-    	Connection conn = null;
-
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			JsonNode jsonObject = mapper.readTree(jsonString);
-			//  {"record":{{col1:"value1"},{col2:"value2"}...}}
-			JsonNode node = jsonObject.get("record");
-			LinkedHashMap<String, String> data = mapper.convertValue(node, LinkedHashMap.class);
-			conn = JdbcUtil.getConnection();
-			new UpdateRecord( conn, tableid, recordid,  data );
-			
-		} catch (Exception e) {
-   			throw new  ExtendedWebApplicationException("update error!");
-		} finally {
-			if( conn != null )
-				try { conn.close();} catch (SQLException e) {}
-		}
-    }
-    @Path("{recordid}") @DELETE
-    public void deleteRecord( @PathParam("recordid") String recordid ) {
-    	Connection conn = null;
-		try {
-			conn = JdbcUtil.getConnection();
-			new DeleteRecord( conn, tableid, recordid );
-		} catch (Exception e) {
-   			throw new  ExtendedWebApplicationException("insert error!");
-		} finally {
-			if( conn != null )
-				try { conn.close();} catch (SQLException e) {}
-		}
+    @Path("{recordid}") 
+    public RecordResource getRecord(@PathParam("recordid") String recordid) {
+        return  new RecordResource(tableid, recordid );
     }
     @Path("search") @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -106,7 +53,7 @@ public class RecordsResource {
 			conn = JdbcUtil.getConnection();
 			oRecords = new SearchRecords( conn, tableid, cond );
 		} catch (Exception e) {
-   			throw new  ExtendedWebApplicationException("insert error!");
+   			throw new  ExtendedWebApplicationException("search error!");
 		} finally {
 			if( conn != null )
 				try { conn.close();} catch (SQLException e) {}
@@ -122,7 +69,7 @@ public class RecordsResource {
 			conn = JdbcUtil.getConnection();
 			oRecords = new SelectRecords(conn, tableid);
 		} catch (Exception e) {
-   			throw new ExtendedWebApplicationException("select table error!");
+   			throw new ExtendedWebApplicationException("select records error!");
 		} finally {
 			if( conn != null )
 				try { conn.close();} catch (SQLException e) {}
