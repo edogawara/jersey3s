@@ -12,23 +12,24 @@ import jakarta.ws.rs.core.MediaType;
 import api.entity.Tables;
 import api.exception.ExtendedWebApplicationException;
 import api.util.JdbcUtil;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
 /**
  * Root Resource Class 
  */
+
 @Path("tables")
+@SecurityRequirement(name = "myBearerSecurity") // for Swagger
 public class TablesResource {
 
+	String bearer = null;
+
+	public TablesResource(@HeaderParam("Authorization") String bearer) {
+		this.bearer = bearer;
+	}
     @Path("{tableid}/")
-    public TableResource getTable(@PathParam("tableid") String tableid
-    		                     , @HeaderParam("Authorization") String bearer) {
-    	/*
-    	ApiAuthorization auth = new ApiAuthorization(bearer);
-    	if( !auth.isInRole("user") ) {
-   			throw new  ExtendedNotAuthorizedException("no permission!");
-    	}
-    	*/
+    public TableResource getTable(@PathParam("tableid") String tableid ) {
     	// サブリソースはインスタンス化してjerseyエンジンに戻す
     	//   メソッドの呼び出しは jersey が行う
         return new TableResource(tableid);

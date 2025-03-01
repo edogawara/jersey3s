@@ -10,6 +10,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 @ApplicationPath("/api")
@@ -36,15 +38,22 @@ public class ApiApplication extends Application {
         url = "/jersey3s")
     }
 )
+@SecurityScheme(name = "myBearerSecurity", // for Swagger define 
+                                           // use @SecurityRequirement(name = "myBearerSecurity")
+	type = SecuritySchemeType.HTTP,
+	scheme = "bearer" 
+)
 public class ApiApplication extends ResourceConfig {
 
-	// CORS 対応(static class or new instance)
+	// CORS 対応(static class or new instance) 
 	public static class CORSFilter implements ContainerResponseFilter {
 	    @Override
 	    public void filter(ContainerRequestContext request, ContainerResponseContext response) {
 	        response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
 	        response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
 	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
+	        // If you need access from local files
+	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Authorization"); 
 	    }
 	}
     public ApiApplication() {
