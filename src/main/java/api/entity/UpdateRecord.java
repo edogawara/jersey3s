@@ -10,17 +10,14 @@ import api.exception.ExtendedNotFoundException;
 
 public class UpdateRecord {
 
-	public UpdateRecord(Connection conn, String tableid, String recordid
-			, LinkedHashMap<String,String> record)	throws SQLException {
-	
+	public  LinkedHashMap<String,String> record = null;
+
+	public void execute(Connection conn, String tableid, String recordid) throws SQLException 	{
 		StringBuffer sql = new StringBuffer("update " + tableid + " set ") ;
 		StringBuffer colList = new StringBuffer();
-
 		ArrayList<String> cols = new ArrayList<>(record.keySet());
 		for ( int i = 0; i < cols.size(); i++){
-			if( i > 0 ) {
-				colList.append(",");
-			}	
+			if( i > 0 ) colList.append(",");
 		    colList.append(cols.get(i) + "= ?");
 		}
 		sql.append( colList.toString() + " where id = ?");
@@ -34,6 +31,5 @@ public class UpdateRecord {
 			throw new  ExtendedNotFoundException("update data not found!");
 		}
 		pstmt.close();
-		
 	}
 }

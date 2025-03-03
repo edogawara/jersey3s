@@ -12,8 +12,7 @@ import api.exception.ExtendedBadRequestException;
 public class InsertRecord {
 
 	public InsertRecord(Connection conn, String tableid, LinkedHashMap<String,String> record)
-				throws SQLException {
-	
+			throws SQLException {
 		{
 			int rows = 0;
 			String recordid = record.get("id");
@@ -28,11 +27,9 @@ public class InsertRecord {
 				throw new ExtendedBadRequestException("Duplicate key error!");
 			}
 		}
-		
 		StringBuffer sql = new StringBuffer("insert into " + tableid) ;
 		StringBuffer colList = new StringBuffer();
 		StringBuffer valList = new StringBuffer();
-
 		ArrayList<String> cols = new ArrayList<>(record.keySet());
 		for ( int i = 0; i < cols.size(); i++){
 			if( i > 0 ) {

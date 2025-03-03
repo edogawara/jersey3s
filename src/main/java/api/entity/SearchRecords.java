@@ -14,20 +14,16 @@ public class SearchRecords {
 	public ArrayList<LinkedHashMap<String,String>> records = new ArrayList<>();
 	
 	public SearchRecords(Connection conn, String tableName, HashMap<String,String> cond ) throws SQLException  {
-		
 		String query = cond.get("query");
 		String where = "";
 		if( query != null && !query.trim().equals("")) {
 			where = " where (" + query + ") ";
 		}
 		String sql = "select * from " + tableName + where ;
-		
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		ResultSetMetaData meta = rs.getMetaData();
-			
 		while( rs.next() ) {
-				
 			LinkedHashMap<String, String> map = new LinkedHashMap<>();
 			for( int i = 0; i < meta.getColumnCount(); i++ ) {
 				String name = meta.getColumnName(i+1);

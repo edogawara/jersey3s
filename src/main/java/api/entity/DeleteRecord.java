@@ -8,9 +8,7 @@ import api.exception.ExtendedNotFoundException;
 
 public class DeleteRecord {
 
-	public DeleteRecord(Connection conn, String tableid, String recordid)
-				throws SQLException {
-	
+	public DeleteRecord(Connection conn, String tableid, String recordid) throws SQLException {
 		String sql = "delete from " + tableid + " where id = ? " ;
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, recordid);

@@ -1,7 +1,6 @@
 package api.resource;
 
 import java.sql.Connection;
-import java.util.LinkedHashMap;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -9,9 +8,6 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import api.entity.DeleteRecord;
 import api.entity.SelectRecord;
@@ -44,13 +40,9 @@ public class RecordResource {
     }
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public void updateRecord( JsonNode jsonObject) {
-		ObjectMapper mapper = new ObjectMapper();
+    public void updateRecord( UpdateRecord update) {
 		try (Connection conn = JdbcUtil.getConnection()) {
-			//  {"record":{{col1:"value1"},{col2:"value2"}...}}
-			JsonNode node = jsonObject.get("record");
-			LinkedHashMap<String, String> data = mapper.convertValue(node, LinkedHashMap.class);
-			new UpdateRecord( conn, tableid, recordid,  data );
+			update.execute( conn, tableid, recordid );
 		} catch (Exception e) {
    			throw new  ExtendedWebApplicationException("update error!");
 		}
