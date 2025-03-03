@@ -10,9 +10,10 @@ import java.util.LinkedHashMap;
 import api.exception.ExtendedBadRequestException;
 
 public class InsertRecord {
+	
+	public LinkedHashMap<String,String> record = null;
 
-	public InsertRecord(Connection conn, String tableid, LinkedHashMap<String,String> record)
-			throws SQLException {
+	public void execute(Connection conn, String tableid) throws SQLException {
 		{
 			int rows = 0;
 			String recordid = record.get("id");

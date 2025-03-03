@@ -2,7 +2,6 @@ package api.resource;
 
 import java.sql.Connection;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -67,14 +66,9 @@ public class RecordsResource {
     }
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertTable( String jsonString, @Context UriInfo uriInfo ) {
-		ObjectMapper mapper = new ObjectMapper();
-		try (Connection conn = JdbcUtil.getConnection()) {
-			JsonNode jsonObject = mapper.readTree(jsonString);
-			//  {"record":{{col1:"value1"},{col2:"value2"}...}}
-			JsonNode node = jsonObject.get("record");
-			LinkedHashMap<String,String> data = mapper.convertValue(node, LinkedHashMap.class);
-			new InsertRecord( conn, tableid, data );
+    public Response insertTable( InsertRecord insert, @Context UriInfo uriInfo ) {
+		try (Connection	conn = JdbcUtil.getConnection() ) {
+			insert.execute(conn, tableid);
 		} catch (Exception e) {
    			throw new  ExtendedWebApplicationException("insert error!");
 		}

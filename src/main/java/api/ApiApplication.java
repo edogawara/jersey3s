@@ -15,16 +15,6 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 @ApplicationPath("/api")
-/*
-public class ApiApplication extends Application {
-    public Set<Class<?>> getClasses() {
-        Set<Class<?>> s = new HashSet<Class<?>>();
-        s.add(MyResource.class);
-        s.add(OpenApiResource.class);
-        return s;
-    }
-}
-*/
 // Swagger Suport 
 @OpenAPIDefinition(
 	info = @io.swagger.v3.oas.annotations.info.Info(
@@ -50,10 +40,8 @@ public class ApiApplication extends ResourceConfig {
 	    @Override
 	    public void filter(ContainerRequestContext request, ContainerResponseContext response) {
 	        response.getHeaders().putSingle("Access-Control-Allow-Origin", "*");
-	        response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type");
-	        // If you need access from local files
-	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Authorization"); 
+	        response.getHeaders().putSingle("Access-Control-Allow-Methods", "OPTIONS,GET,POST,PUT,DELETE");
+	        response.getHeaders().putSingle("Access-Control-Allow-Headers", "Content-Type,Authorization");
 	    }
 	}
     public ApiApplication() {
