@@ -12,7 +12,7 @@ public class SelectRecord {
 	public LinkedHashMap<String,String> record = new LinkedHashMap<>();
 	
 	public SelectRecord(Connection conn, String tableName, String recordid  ) throws SQLException  {
-		String sql = "select * from " + tableName + " where id = ?";
+		String sql = "select * from " + tableName + " where id::text = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, recordid);
 		ResultSet rs = pstmt.executeQuery();

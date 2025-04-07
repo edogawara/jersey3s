@@ -10,7 +10,7 @@ import api.exception.ExtendedNotFoundException;
 
 public class UpdateRecord {
 
-	public  LinkedHashMap<String,String> record = null;
+	public  LinkedHashMap<String,String> record ;
 
 	public void execute(Connection conn, String tableid, String recordid) throws SQLException 	{
 		StringBuffer sql = new StringBuffer("update " + tableid + " set ") ;

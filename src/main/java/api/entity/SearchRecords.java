@@ -17,7 +17,7 @@ public class SearchRecords {
 		String query = cond.get("query");
 		String where = "";
 		if( query != null && !query.trim().equals("")) {
-			where = " where (" + query + ") ";
+			where = " where (" + query + ") limit 100";
 		}
 		String sql = "select * from " + tableName + where ;
 		Statement stmt = conn.createStatement();

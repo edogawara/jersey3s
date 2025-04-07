@@ -13,7 +13,7 @@ public class SelectRecords {
 	public ArrayList<LinkedHashMap<String,String>> records = new ArrayList<>();
 	
 	public SelectRecords(Connection conn, String tableName ) throws SQLException {
-		String sql = "select * from " + tableName ;
+		String sql = "select * from " + tableName + " limit 100";
 		Statement stmt = conn.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		ResultSetMetaData meta = rs.getMetaData();

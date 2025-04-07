@@ -11,10 +11,10 @@ import api.exception.ExtendedBadRequestException;
 
 public class InsertRecord {
 	
-	public LinkedHashMap<String,String> record = null;
+	public LinkedHashMap<String,String> record ; //= null;
 
 	public void execute(Connection conn, String tableid) throws SQLException {
-		{
+		{	// Duplicate check
 			int rows = 0;
 			String recordid = record.get("id");
 			String sql = "select * from " + tableid + " where id=?";
